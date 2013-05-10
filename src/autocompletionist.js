@@ -36,7 +36,7 @@
      */
     self.ensureValidSearchTerm = function (term) {
       return (term || "").toString().toLowerCase();
-    }
+    };
 
     /**
      * Add match to the matches array.
