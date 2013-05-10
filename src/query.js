@@ -3,17 +3,23 @@
   var Query;
 
   Query = function (options) {
+    
     var self = this;
-
-    self.hasOutputSelector = false;
-    self.logger = new window.QueryParser.Logger("Query", options.debug);
     self.options = options;
-    self.$output = null;
-    self.queryPartDelimiters = options.queryPartDelimiters;
-    self.querySegments = [];
-    self.queryString = "";
-
+    
+    /**
+     * Initialize a new Query instance.
+     */
     self.initialize = function () {
+      self.logger = new window.QueryParser.Logger("Query", options.debug);
+    
+      self.$output = null;  
+      self.hasOutputSelector = false;
+      self.lastQuerySegment = null;
+      self.queryPartDelimiters = self.options.queryPartDelimiters;
+      self.querySegments = [];
+      self.queryString = "";
+
       if (self.options.outputSelector) {
         self.hasOutputSelector = true;
         self.$output = $(self.options.outputSelector);
@@ -37,6 +43,7 @@
         var queryPart = queryParts[i];
         var querySegment = new window.QueryParser.QuerySegment(queryPart);
         self.querySegments.push(querySegment);
+        self.lastQuerySegment = querySegment;
       }
     };
 

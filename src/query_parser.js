@@ -14,15 +14,17 @@
 
     var self = this;
 
-    // Overwrite default options with user values.
+    /** 
+     * Overwrite default options with user values.
+     */
     $.extend(options, userOptions);
 
-    // Local variables.
     self.options = options;
     self.$selector = $(selector);
-    self.logger = new window.QueryParser.Logger("QueryParser", self.options.debug);
-    self.query = new window.QueryParser.Query(self.options);
-
+    
+    /**
+     * Bind all user interface events.
+     */
     self.bindEvents = function () {
       var events = options.events.join(" ");
 
@@ -34,11 +36,27 @@
       });
     };
 
+    /**
+     * Initialize a new QueryParser instance.
+     */
     self.initialize = function () {
-      self.logger.debug("Creating new QueryParser instance.");
+      self.initializeLogger();
+      self.query = new window.QueryParser.Query(self.options);
+      self.autocompletionist = new window.QueryParser.Autocompletionist(self);
       self.bindEvents();
     };
 
+    /**
+     * Initialize a new logger for the Query Parser instance.
+     */
+    self.initializeLogger = function () {
+      self.logger = new window.QueryParser.Logger("QueryParser", self.options.debug);
+      self.logger.debug("Creating new QueryParser instance.");
+    };
+
+    /**
+     * Parse the query content.
+     */
     self.parseQuery = function () {
       var content = self.$selector.val();
       self.query.setQueryString(content);

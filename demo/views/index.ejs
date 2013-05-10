@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    
+    <!-- Stylesheets -->
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    
+    <!-- JavaScripts -->
+    <script type="text/javascript" src="/javascripts/jquery-1.9.1.min.js"></script>  
+    <script type="text/javascript" src="/javascripts/logger.js"></script>
+  	<script type="text/javascript" src="/javascripts/query_parser.js"></script>
+    <script type="text/javascript" src="/javascripts/query_segment.js"></script>
+    <script type="text/javascript" src="/javascripts/query.js"></script>
+  	<script type="text/javascript" src="/javascripts/autocompletionist.js"></script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <form id="test-form">
+      <textarea id="query-text"></textarea>
+    </form>
+    <div id="test-output"></div>
+  </body>
+  <script type="text/javascript">
+    var options = {
+      keys: ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Indigo", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", "X-Ray", "Zulu"],
+      debug: true,
+      outputSelector: "#test-output"
+    };
+    var queryParser = new QueryParser.QueryParser("#query-text", options);
+  </script>
+</html>
