@@ -23,7 +23,7 @@
       if (!self.$list) {
         return;
       }
-      self.$list.hide();
+      self.hide();
       self.$list.find("." + self.itemCssClass).remove();
     };
 
@@ -56,6 +56,10 @@
       }
 
       return self.matches;
+    };
+
+    self.hide = function () { 
+      self.$list.hide();
     };
 
     self.initialize = function () {

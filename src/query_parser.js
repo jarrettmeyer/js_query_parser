@@ -38,6 +38,10 @@
       self.$selector.on(events, function () {
         self.parseQuery();
       });
+
+      self.$selector.on("blur", function () {
+        self.autocompletionist.hide();
+      });
     };
 
     /**
