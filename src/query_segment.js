@@ -11,10 +11,11 @@
      * Initialize a query segment.
      */
     self.initialize = function () {
-      self.comparators = /\s(=|<>|!=|>|>=|<|<=|in)\s/i;
+      self.comparators = /(=|<>|!=|>|>=|<|<=|in)/i;
       self.comparator = null;
       self.comparatorIndex = null;
       self.key = null;
+      self.term = null;
       self.value = null;
       self.parseQuerySegment();
     };
@@ -25,9 +26,9 @@
         self.key = parts[0].trim();
         self.comparator = parts[1].trim();
         self.value = parts[2].trim();
-        self.showKeyAutocompleteOptions = false;
+        self.term = self.key;
       } else {
-        self.showKeyAutocompleteOptions = true;
+        self.term = self.queryPart;
       }
     };
 

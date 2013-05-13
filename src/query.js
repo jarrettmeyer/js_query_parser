@@ -2,6 +2,9 @@
 
   var Query;
 
+  /**
+   *
+   */
   Query = function (options) {
     
     var self = this;
@@ -35,6 +38,15 @@
       }
     };
 
+    self.setCurrentTerm = function (value) {
+      self.currentTerm = value;
+      self.queryUpdateCallback(value);
+    };
+
+    self.setQueryUpdateCallback = function (value) {
+      self.queryUpdateCallback = value;
+    }
+
     self.splitQueryStringIntoParts = function () {
       self.querySegments = [];
       var queryParts = self.queryString.split(self.queryPartDelimiters);
@@ -45,6 +57,8 @@
         self.querySegments.push(querySegment);
         self.lastQuerySegment = querySegment;
       }
+
+      self.setCurrentTerm(self.lastQuerySegment.term);
     };
 
     self.setQueryString = function (value) {

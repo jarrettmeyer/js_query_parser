@@ -2,10 +2,38 @@
 
   var Autocompletionist;
 
-  Autocompletionist = function (queryParser) {
+  Autocompletionist = function (options) {
     
     var self = this;
-    self.queryParser = queryParser;    
+    self.options = options;    
+
+    /**
+     * Add match to the matches array.
+     */
+    self.addMatch = function (match) {
+      self.matches.push(match);
+      self.numberOfMatches += 1;
+      
+      var item = $("<li class=\"" + self.itemCssClass + "\">" + match + "</li>");
+      self.$list.append(item);
+      self.$list.show();
+    };
+
+    self.clearListItems = function () {
+      if (!self.$list) {
+        return;
+      }
+      self.$list.hide();
+      self.$list.find("." + self.itemCssClass).remove();
+    };
+
+    /**
+     * Make sure that we have a valid search term. If the term is falsy, use
+     * an empty string.
+     */
+    self.ensureValidSearchTerm = function (term) {
+      return (term || "").toString().toLowerCase();
+    };
 
     /**
      * Find matches for the term in the array of keys.
@@ -30,34 +58,35 @@
       return self.matches;
     };
 
-    /**
-     * Make sure that we have a valid search term. If the term is falsy, use
-     * an empty string.
-     */
-    self.ensureValidSearchTerm = function (term) {
-      return (term || "").toString().toLowerCase();
-    }
-
-    /**
-     * Add match to the matches array.
-     */
-    self.addMatch = function (match) {
-      self.matches.push(match);
-      self.numberOfMatches += 1;
-      self.showPotentialMatches = true;
-    };
-
     self.initialize = function () {
-      self.keys = self.queryParser.options.keys || [];
+      self.keys = self.options.keys || [];
       self.numberOfKeys = self.keys.length;
-      self.showPotentialMatches = false;
+      self.listCssClass = "query-parser-autocomplete-list";
+      self.itemCssClass = "query-parser-autocomplete-item";
+      self.$selector = self.options.selector;
       self.initializeLogger();
       self.initializeLowerCaseKeys();
       self.initializeMatches();
+      self.initializeList();
+    };
+
+    self.initializeList = function () {
+      self.$list = $("<ul class=\"" + self.listCssClass + "\"></ul>");
+      var top = self.options.$selector.position().top + 
+                self.options.$selector.height() + 
+                parseInt(self.options.$selector.css("padding-top")) +
+                parseInt(self.options.$selector.css("padding-bottom")) +
+                parseInt(self.options.$selector.css("border-top-width")) +
+                parseInt(self.options.$selector.css("border-bottom-width"));
+      var left = self.options.$selector.position().left;
+      self.$list.css("top", top);
+      self.$list.css("left", left);
+      self.$list.hide();
+      $("body").append(self.$list);
     };
 
     self.initializeLogger = function () {
-      self.logger = new window.QueryParser.Logger("Autocompletionist", self.queryParser.options.debug);
+      self.logger = new window.QueryParser.Logger("Autocompletionist", self.options.debug);
       self.logger.debug("Creating new Autocompletionist instance");
     };
 
@@ -73,7 +102,7 @@
     self.initializeMatches = function () {
       self.matches = [];
       self.numberOfMatches = 0;
-      self.showPotentialMatches = false;
+      self.clearListItems();      
     };
 
     self.initialize();

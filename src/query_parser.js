@@ -1,4 +1,5 @@
 (function () {
+  
   var QueryParser;
 
   var options = {
@@ -10,6 +11,9 @@
     queryPartDelimiters: /\s(?:and|or)\s/i
   };
 
+  /**
+   *
+   */
   QueryParser = function (selector, userOptions) {
 
     var self = this;
@@ -40,9 +44,11 @@
      * Initialize a new QueryParser instance.
      */
     self.initialize = function () {
+      self.options.$selector = self.$selector;
       self.initializeLogger();
       self.query = new window.QueryParser.Query(self.options);
-      self.autocompletionist = new window.QueryParser.Autocompletionist(self);
+      self.query.setQueryUpdateCallback(self.onQueryUpdated)
+      self.autocompletionist = new window.QueryParser.Autocompletionist(self.options);
       self.bindEvents();
     };
 
@@ -52,6 +58,10 @@
     self.initializeLogger = function () {
       self.logger = new window.QueryParser.Logger("QueryParser", self.options.debug);
       self.logger.debug("Creating new QueryParser instance.");
+    };
+
+    self.onQueryUpdated = function (term) {
+      self.autocompletionist.findMatches(term);
     };
 
     /**
