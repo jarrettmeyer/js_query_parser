@@ -9,11 +9,11 @@
     
     <!-- JavaScripts -->
     <script type="text/javascript" src="/javascripts/jquery-1.9.1.min.js"></script>  
-    <script type="text/javascript" src="/javascripts/logger.js"></script>
-  	<script type="text/javascript" src="/javascripts/query_parser.js"></script>
-    <script type="text/javascript" src="/javascripts/query_segment.js"></script>
-    <script type="text/javascript" src="/javascripts/query.js"></script>
-  	<script type="text/javascript" src="/javascripts/autocompletionist.js"></script>
+    <script type="text/javascript" src="/src/logger.js"></script>
+  	<script type="text/javascript" src="/src/query_parser.js"></script>
+    <script type="text/javascript" src="/src/query_segment.js"></script>
+    <script type="text/javascript" src="/src/query.js"></script>
+  	<script type="text/javascript" src="/src/autocompletionist.js"></script>
   </head>
   <body>
     <h1><%= title %></h1>
@@ -21,11 +21,11 @@
     <form id="test-form">
       <textarea id="query-text"></textarea>
     </form>
-    <div id="test-output"></div>
+    <div id="test-output" style="display:none;"></div>
   </body>
   <script type="text/javascript">
     var options = {
-      keys: ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Indigo", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", "X-Ray", "Zulu"],
+      keys: ["Bear", "Cat", "Cheetah", "Dog", "Ferret", "Fox", "Hyena", "Leopard", "Lynx", "Mongoose", "Otter", "Panda", "Raccoon", "Sea Lion", "Sea Otter", "Seal", "Tiger", "Wolf"],
       debug: true,
       outputSelector: "#test-output"
     };
