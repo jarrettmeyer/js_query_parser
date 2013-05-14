@@ -3,9 +3,9 @@
   var Autocompletionist;
 
   Autocompletionist = function (options) {
-    
+
     var self = this;
-    self.options = options;    
+    self.options = options;
 
     /**
      * Add match to the matches array.
@@ -13,10 +13,11 @@
     self.addMatch = function (match) {
       self.matches.push(match);
       self.numberOfMatches += 1;
-      
+
       var item = $("<li class=\"" + self.itemCssClass + "\">" + match + "</li>");
       self.$list.append(item);
       self.$list.show();
+      self.visible = true;
     };
 
     self.clearListItems = function () {
@@ -58,7 +59,8 @@
       return self.matches;
     };
 
-    self.hide = function () { 
+    self.hide = function () {
+      self.visible = false;
       self.$list.hide();
     };
 
@@ -67,6 +69,7 @@
       self.numberOfKeys = self.keys.length;
       self.listCssClass = "query-parser-autocomplete-list";
       self.itemCssClass = "query-parser-autocomplete-item";
+      self.visible = false;
       self.$selector = self.options.selector;
       self.initializeLogger();
       self.initializeLowerCaseKeys();
@@ -76,12 +79,12 @@
 
     self.initializeList = function () {
       self.$list = $("<ul class=\"" + self.listCssClass + "\"></ul>");
-      var top = self.options.$selector.position().top + 
-                self.options.$selector.height() + 
-                parseInt(self.options.$selector.css("padding-top")) +
-                parseInt(self.options.$selector.css("padding-bottom")) +
-                parseInt(self.options.$selector.css("border-top-width")) +
-                parseInt(self.options.$selector.css("border-bottom-width"));
+      var top = self.options.$selector.position().top +
+                self.options.$selector.height() +
+                parseInt( self.options.$selector.css("padding-top") ) +
+                parseInt( self.options.$selector.css("padding-bottom") ) +
+                parseInt( self.options.$selector.css("border-top-width") ) +
+                parseInt( self.options.$selector.css("border-bottom-width") );
       var left = self.options.$selector.position().left;
       self.$list.css("top", top);
       self.$list.css("left", left);
@@ -106,7 +109,7 @@
     self.initializeMatches = function () {
       self.matches = [];
       self.numberOfMatches = 0;
-      self.clearListItems();      
+      self.clearListItems();     
     };
 
     self.initialize();
