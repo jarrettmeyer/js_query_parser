@@ -48,7 +48,7 @@
 
       for (var i = 0; i < self.numberOfKeys; i += 1) {
         var lowerCaseKey = self.lowerCaseKeys[i];
-        if (lowerCaseKey.indexOf(term) >= 0) {
+        if (lowerCaseKey.indexOf(term) === 0) {
           var key = self.keys[i];
           self.logger.debug("Found match for term '" + term + "': " + self.keys[i]);
           self.addMatch(key);
