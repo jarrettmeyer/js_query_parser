@@ -85,11 +85,16 @@ test("has expected current query term", function () {
   var currentTerm, expectedValue, expectedValues, i, len, tests, testValue, testValues;
 
   tests = [
-    ["a", "a"],
-    ["alpha", "alpha"],
-    ["alpha ", ""],
-    [" alpha", "alpha"],
-    [" alpha ", ""]
+    ["alpha", "alpha"],     // term => term
+    ["alpha ", ""],         // trailing space => no term
+    [" alpha", "alpha"],    // leading space => term
+    [" alpha ", ""],        // trailing space => no term, precedence
+    ["(alpha", "alpha"],    // leading opening paren => term
+    ["((alpha", "alpha"],   // 2x leading opening paren => term
+    ["alpha>", ""],         // trailing comparator => no term
+    ["alpha<", ""],         // trailing comparator => no term
+    ["alpha=", ""],         // trailing comparator => no term
+    ["alpha>=", ""]         // trailing comparator => no term
   ];
 
   len = tests.length;

@@ -37,7 +37,7 @@
       // By default, the term is equal to the entire part.
       self.term = self.queryPart;
 
-      splitByCharacters = self.term.split(/\s/);
+      splitByCharacters = self.term.split(/\s|\(|<|>|=/);
       numberOfSplits = splitByCharacters.length;
 
       // If the query term ends with an empty space, we can assume that the user has 
