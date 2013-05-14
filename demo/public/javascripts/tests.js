@@ -17,6 +17,10 @@ function addTextareaToDocument() {
   $fixture.append($testTextarea);
 }
 
+function cleanupAutocompleteLists() {
+  $(".query-parser-autocomplete-list").remove();
+}
+
 /**
  * Module for autocompletionist tests.
  */
@@ -28,7 +32,10 @@ module("Autocompletionist tests", {
 		// Create the object.
 		queryParser = new QueryParser.QueryParser(textareaSelector, options);
 		autocompletionist = queryParser.autocompletionist;
-	}
+	},
+  teardown: function () {
+    cleanupAutocompleteLists();
+  }
 });
 
 test("can create instance of Autocompletionist", function () {
@@ -57,7 +64,6 @@ test("number of matches is 0 by default", function () {
   equal(autocompletionist.numberOfMatches, 0);
 });
 
-
 /**
  * Module for Query Parser tests.
  */
@@ -65,11 +71,38 @@ module("Query Parser tests", {
   setup: function () {
     addTextareaToDocument();
     queryParser = new QueryParser.QueryParser(textareaSelector, options);
+  },
+  teardown: function () {
+    cleanupAutocompleteLists();
   }
 });
 
 test("can create instance of query parser", function () {
   ok(queryParser instanceof Object);
+});
+
+test("has expected current query term", function () {
+  var currentTerm, expectedValue, expectedValues, i, len, tests, testValue, testValues;
+
+  tests = [
+    ["a", "a"],
+    ["alpha", "alpha"],
+    ["alpha ", ""],
+    [" alpha", "alpha"],
+    [" alpha ", ""]
+  ];
+
+  len = tests.length;
+
+  expect(len);
+
+  for (i = 0; i < len; i += 1) {
+    testValue = tests[i][0];
+    expectedValue = tests[i][1];
+    queryParser.setQueryString(testValue);
+    currentTerm = queryParser.getCurrentTerm();
+    equal(currentTerm, expectedValue);
+  }
 });
 
 

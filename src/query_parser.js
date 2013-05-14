@@ -1,5 +1,5 @@
 (function () {
-  
+
   var QueryParser;
 
   var options = {
@@ -18,22 +18,19 @@
 
     var self = this;
 
-    /** 
-     * Overwrite default options with user values.
-     */
+    // Overwrite default options with user values. Assign the local variables.
     $.extend(options, userOptions);
-
     self.options = options;
     self.$selector = $(selector);
-    
+
     /**
      * Bind all user interface events.
      */
     self.bindEvents = function () {
       var events = options.events.join(" ");
 
-      self.logger.debug("Debug mode enabled: " + options.debug);
-      self.logger.debug("Binding events: " + events);
+      //self.logger.debug("Debug mode enabled: " + options.debug);
+      //self.logger.debug("Binding events: " + events);
 
       self.$selector.on(events, function () {
         self.parseQuery();
@@ -44,14 +41,19 @@
       });
     };
 
+    self.getCurrentTerm = function () {
+      return self.query.currentTerm;
+    };
+
     /**
      * Initialize a new QueryParser instance.
      */
     self.initialize = function () {
       self.options.$selector = self.$selector;
       self.initializeLogger();
+      self.queryString = "";
       self.query = new window.QueryParser.Query(self.options);
-      self.query.setQueryUpdateCallback(self.onQueryUpdated)
+      self.query.setQueryUpdatedCallback(self.onQueryUpdated);
       self.autocompletionist = new window.QueryParser.Autocompletionist(self.options);
       self.bindEvents();
     };
@@ -73,7 +75,12 @@
      */
     self.parseQuery = function () {
       var content = self.$selector.val();
-      self.query.setQueryString(content);
+      self.setQueryString(content);
+    };
+
+    self.setQueryString = function (value) {
+      self.queryString = value;
+      self.query.setQueryString(value);
     };
 
     self.initialize();
