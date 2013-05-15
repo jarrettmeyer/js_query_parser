@@ -22,6 +22,19 @@
     self.options = options;
     self.$selector = $(selector);
 
+    self.autocomplete = function () {
+      var content, currentTermLength, queryStringLength, uneditedQueryPart;
+      if (self.autocompletionist.selectedItemValue) {
+        //self.logger.debug("Tab autocompletion for value: " + self.autocompletionist.selectedItemValue);
+        queryStringLength = self.queryString.length;
+        currentTermLength = self.query.currentTerm.length;
+        uneditedQueryPart = self.queryString.substr(0, queryStringLength - currentTermLength - 1);
+        content = uneditedQueryPart + self.autocompletionist.selectedItemValue;
+        self.$selector.val(content);
+        self.setQueryString(content);
+      }
+    };
+
     /**
      * Bind all user interface events.
      */
@@ -80,7 +93,7 @@
     };
 
     self.onEnterPressed = function () {
-      //self.logger.debug("Enter was pressed.");
+      self.autocomplete();
       return false;
     };
 
@@ -109,6 +122,7 @@
 
     self.onTabPressed = function () {
       //self.logger.debug("Tab was pressed.");
+      self.autocomplete();
       return false;
     };
 
