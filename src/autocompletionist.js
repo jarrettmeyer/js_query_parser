@@ -28,6 +28,15 @@
       self.$list.find("." + self.itemCssClass).remove();
     };
 
+    self.decrementSelectedItemIndex = function () {
+      if (self.selectedItemIndex > 0) {
+        self.selectedItemIndex -= 1;
+        self.selectedItemValue = self.matches[self.selectedItemIndex];
+        self.$list.find("." + self.itemCssClass).removeClass("selected");
+        self.$list.find("." + self.itemCssClass + ":nth(" + self.selectedItemIndex + ")").addClass("selected");
+      }
+    };
+
     /**
      * Make sure that we have a valid search term. If the term is falsy, use
      * an empty string.
@@ -70,7 +79,7 @@
       if (self.selectedItemIndex < self.numberOfMatches - 1) {
         self.selectedItemIndex += 1;
         self.selectedItemValue = self.matches[self.selectedItemIndex];
-        self.$list.find("." + self.itemCssClass).addClass("selected");
+        self.$list.find("." + self.itemCssClass).removeClass("selected");
         self.$list.find("." + self.itemCssClass + ":nth(" + self.selectedItemIndex + ")").addClass("selected");
       }
     };

@@ -113,6 +113,7 @@
     };
 
     self.onUpArrowPressed = function () {
+      self.autocompletionist.decrementSelectedItemIndex();
       return false;
     };
 
