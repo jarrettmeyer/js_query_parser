@@ -15,3 +15,8 @@
 	padding: 3px;
 	font-size: 12px;
 }
+
+.query-parser-autocomplete-item.selected {
+	background-color: #99ccff;
+	color: #ffffff;
+}

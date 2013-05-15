@@ -56,12 +56,23 @@
         }
       }
 
+      self.selectFirstItemInList();
+
       return self.matches;
     };
 
     self.hide = function () {
       self.visible = false;
       self.$list.hide();
+    };
+
+    self.incrementSelectedItemIndex = function () {
+      if (self.selectedItemIndex < self.numberOfMatches - 1) {
+        self.selectedItemIndex += 1;
+        self.selectedItemValue = self.matches[self.selectedItemIndex];
+        self.$list.find("." + self.itemCssClass).addClass("selected");
+        self.$list.find("." + self.itemCssClass + ":nth(" + self.selectedItemIndex + ")").addClass("selected");
+      }
     };
 
     self.initialize = function () {
@@ -81,10 +92,10 @@
       self.$list = $("<ul class=\"" + self.listCssClass + "\"></ul>");
       var top = self.options.$selector.position().top +
                 self.options.$selector.height() +
-                parseInt( self.options.$selector.css("padding-top") ) +
-                parseInt( self.options.$selector.css("padding-bottom") ) +
-                parseInt( self.options.$selector.css("border-top-width") ) +
-                parseInt( self.options.$selector.css("border-bottom-width") );
+                parseInt(self.options.$selector.css("padding-top"), 10) +
+                parseInt(self.options.$selector.css("padding-bottom"), 10) +
+                parseInt(self.options.$selector.css("border-top-width"), 10) +
+                parseInt(self.options.$selector.css("border-bottom-width"), 10);
       var left = self.options.$selector.position().left;
       self.$list.css("top", top);
       self.$list.css("left", left);
@@ -109,7 +120,17 @@
     self.initializeMatches = function () {
       self.matches = [];
       self.numberOfMatches = 0;
-      self.clearListItems();     
+      self.selectedItemValue = "";
+      self.selectedItemIndex = -1;
+      self.clearListItems();
+    };
+
+    self.selectFirstItemInList = function () {
+      if (self.numberOfMatches > 0) {
+        self.selectedItemIndex = 0;
+        self.selectedItemValue = self.matches[0];
+        self.$list.find('.' + self.itemCssClass + ':first').addClass("selected");
+      }
     };
 
     self.initialize();

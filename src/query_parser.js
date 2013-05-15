@@ -4,7 +4,6 @@
 
   var options = {
     debug: false,
-    events: ["blur", "focus", "keyup"],
     keys: [],
     newline: "<br/>",
     outputSelector: null,
@@ -27,12 +26,11 @@
      * Bind all user interface events.
      */
     self.bindEvents = function () {
-      var events = options.events.join(" ");
 
       //self.logger.debug("Debug mode enabled: " + options.debug);
       //self.logger.debug("Binding events: " + events);
 
-      self.$selector.on(events, function () {
+      self.$selector.on("focus keyup", function () {
         self.parseQuery();
       });
 
@@ -57,9 +55,13 @@
       self.query = new window.QueryParser.Query(self.options);
       self.query.setQueryUpdatedCallback(self.onQueryUpdated);
       self.autocompletionist = new window.QueryParser.Autocompletionist(self.options);
+      self.isQueryStringUpdated = false;
       self.keyEvents = {
         9: { callback: self.onTabPressed, name: "Tab" },
-        13: { callback: self.onEnterPressed, name: "Enter" }
+        13: { callback: self.onEnterPressed, name: "Enter" },
+        27: { callback: self.onEscapePressed, name: "Escape" },
+        38: { callback: self.onUpArrowPressed, name: "Up Arrow" },
+        40: { callback: self.onDownArrowPressed, name: "Down Arrow" }
       };
       self.bindEvents();
     };
@@ -72,20 +74,33 @@
       self.logger.debug("Creating new QueryParser instance.");
     };
 
+    self.onDownArrowPressed = function () {
+      self.autocompletionist.incrementSelectedItemIndex();
+      return false;
+    };
+
     self.onEnterPressed = function () {
       //self.logger.debug("Enter was pressed.");
+      return false;
+    };
+
+    self.onEscapePressed = function () {
+      self.logger.debug("Escape was pressed. Hiding autocomplete.");
+      self.autocompletionist.hide();
       return false;
     };
 
     self.onKeydown = function (event) {
       var key, keyEvent;
       key = event.which;
-      self.logger.debug("Keyup: " + key);
+      self.logger.debug("Keydown: " + key);
       keyEvent = self.keyEvents[key];
       if (keyEvent) {
         return keyEvent.callback();
+      } else {
+        self.isQueryStringUpdated = true;
+        return true;
       }
-      return true;
     };
 
     self.onQueryUpdated = function (term) {
@@ -97,12 +112,19 @@
       return false;
     };
 
+    self.onUpArrowPressed = function () {
+      return false;
+    };
+
     /**
      * Parse the query content.
      */
     self.parseQuery = function () {
-      var content = self.$selector.val();
-      self.setQueryString(content);
+      if (self.isQueryStringUpdated) {
+        var content = self.$selector.val();
+        self.setQueryString(content);
+        self.isQueryStringUpdated = false;
+      }
     };
 
     self.setQueryString = function (value) {
