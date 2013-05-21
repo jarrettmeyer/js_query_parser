@@ -98,6 +98,9 @@
     };
 
     self.initializeList = function () {
+      self.options.$selector.wrap("<div></div>");
+      var $wrapper = self.options.$selector.parent();
+      $wrapper.addClass("query-parser-autocomplete-wrapper");
       self.$list = $("<ul class=\"" + self.listCssClass + "\"></ul>");
       var top = self.options.$selector.position().top +
                 self.options.$selector.height() +
@@ -109,7 +112,7 @@
       self.$list.css("top", top);
       self.$list.css("left", left);
       self.$list.hide();
-      $("body").append(self.$list);
+      $wrapper.append(self.$list);
     };
 
     self.initializeLogger = function () {
